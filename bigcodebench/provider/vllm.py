@@ -52,6 +52,8 @@ class VllmDecoder(DecoderBase):
             )
             for prompt in prompts
         ]
+        print(prompts[0])
+        exit()
         vllm_outputs = self.llm.generate(
             prompts,
             SamplingParams(
