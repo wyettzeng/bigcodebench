@@ -2,7 +2,7 @@
 
 models=(
   "Qwen/CodeQwen1.5-7B-Chat"
-  # "Qwen/Qwen2.5-Coder-7B-Instruct"
+  "Qwen/Qwen2.5-Coder-7B-Instruct"
   "NTQAI/Nxcode-CQ-7B-orpo"
   "meta-llama/Meta-Llama-3-8B-Instruct"
 )
