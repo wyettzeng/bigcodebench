@@ -9,27 +9,25 @@ def main(
         n_samples: int= 16,
         do_eval: bool = False
     ):
-    if not do_eval:
-        print("Here")
-        if n_samples == 1:
-            # greedy we can just
-            run_codegen(
-                split=split,
-                subset=subset,
-                n_samples=n_samples,
-                model=model,
-                backend="vllm",
-            )
-        else:
-            run_codegen(
-                split=split,
-                subset=subset,
-                n_samples=n_samples,
-                model=model,
-                backend="vllm",
-                temperature=1.0
-            )
+    if n_samples == 1:
+        evaluate(
+            split=split,
+            subset=subset,
+            n_samples=n_samples,
+            model=model,
+            backend="vllm",
+        )
+    elif not do_eval:
+        run_codegen(
+            split=split,
+            subset=subset,
+            n_samples=n_samples,
+            model=model,
+            backend="vllm",
+            temperature=1.0
+        )
     else:
+        # we evaluate locally as it errored out with API
         revision: str = "main"
         extra = "-" + subset if subset != "full" else ""
         backend = "vllm"

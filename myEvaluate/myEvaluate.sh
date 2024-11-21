@@ -2,9 +2,9 @@
 
 models=(
   "Qwen/CodeQwen1.5-7B-Chat"
-  # "Qwen/Qwen2.5-Coder-7B-Instruct"
-  # "NTQAI/Nxcode-CQ-7B-orpo"
-  # "meta-llama/Meta-Llama-3-8B-Instruct"
+  "Qwen/Qwen2.5-Coder-7B-Instruct"
+  "NTQAI/Nxcode-CQ-7B-orpo"
+  "meta-llama/Meta-Llama-3-8B-Instruct"
 )
 
 splits=(
@@ -17,10 +17,6 @@ subsets=(
   # "full"
 )
 
-samples=(
-  # 1
-  16
-)
 
 for model in ${models[@]}
 do
@@ -28,14 +24,20 @@ do
   do
     for subset in ${subsets[@]}
     do
-      for sample in ${samples[@]}
-      do
-        # generate
+        # greedy
         # python myEvaluate/myEvaluate.py \
         #   --model ${model} \
         #   --split $split \
         #   --subset $subset \
-        #   --n_samples $sample \
+        #   --n_samples 1 \
+        #   --do_eval False 
+
+        # # generate
+        # python myEvaluate/myEvaluate.py \
+        #   --model ${model} \
+        #   --split $split \
+        #   --subset $subset \
+        #   --n_samples 16 \
         #   --do_eval False 
 
         #eval
@@ -43,9 +45,8 @@ do
           --model ${model} \
           --split $split \
           --subset $subset \
-          --n_samples $sample \
+          --n_samples 16 \
           --do_eval True 
-      done
     done
   done
 done
