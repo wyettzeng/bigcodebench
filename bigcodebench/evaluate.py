@@ -7,11 +7,13 @@ import threading
 import time
 from collections import Counter, defaultdict
 from concurrent.futures import ProcessPoolExecutor, as_completed, wait, FIRST_COMPLETED
+from concurrent.futures._base import CancelledError
 from datetime import datetime
 from typing import Any, Dict, List, Tuple, Optional
 from warnings import warn
 from gradio_client import Client, handle_file
 
+import httpx
 import numpy as np
 from termcolor import cprint
 from tqdm import tqdm
@@ -120,6 +122,7 @@ def evaluate(
     remote_execute_api: str = "https://bigcode-bigcodebench-evaluator.hf.space/",
     pass_k: str = "1,5,10",
     save_pass_rate: bool = True,
+    calibrated: bool = True,
     parallel: int = -1,
     min_time_limit: float = 1,
     max_as_limit: int = 30*1024,
@@ -149,27 +152,35 @@ def evaluate(
         result_path = samples.replace(".jsonl", "_eval_results.json")
     
     if not local_execute:
-        
-        client = Client(remote_execute_api)
-        results, pass_at_k = client.predict(
-            split=split,
-            subset=subset,
-            samples=handle_file(samples),
-            pass_k=pass_k,
-            parallel=parallel,
-            min_time_limit=min_time_limit,
-            max_as_limit=max_as_limit,
-            max_data_limit=max_data_limit,
-            max_stack_limit=max_stack_limit,
-            check_gt_only=check_gt_only,
-            no_gt=no_gt,
-            api_name="/predict"
-        )
+        while True:
+            try:
+                client = Client(remote_execute_api)
+                results, pass_at_k = client.predict(
+                    split=split,
+                    subset=subset,
+                    samples=handle_file(samples),
+                    pass_k=pass_k,
+                    parallel=parallel,
+                    min_time_limit=min_time_limit,
+                    max_as_limit=max_as_limit,
+                    max_data_limit=max_data_limit,
+                    max_stack_limit=max_stack_limit,
+                    calibrated=calibrated,
+                    check_gt_only=check_gt_only,
+                    no_gt=no_gt,
+                    api_name="/predict"
+                )
+                break
+            except (httpx.ReadTimeout, CancelledError):
+                print("Read timeout error. Retrying in 4s...")
+                time.sleep(4)
         gt_pass_rate = pass_at_k["gt_pass_rate"]
         failed_tasks = pass_at_k["failed_tasks"]
         
     else:
         
+        pass_at_k = dict()
+
         pass_k = [int(k) for k in pass_k.split(",")]
         
         if parallel < 1:
@@ -199,8 +210,6 @@ def evaluate(
 
             results = compatible_eval_result(results)
         else:
-            pass_at_k = dict()
-            
             if check_gt_only:
             
                 if gt_pass_rate > 0.99:
@@ -238,7 +247,7 @@ def evaluate(
                             if "solution" in sample
                             else problems[task_id]["complete_prompt"] + sample["completion"]
                         )
-                        if "sanitized_calibrated" in samples:
+                        if calibrated:
                             solution = problems[task_id]["code_prompt"] + "\n    pass\n" + solution
                         remainings.add(sample["_identifier"])
                         args = (
@@ -259,62 +268,62 @@ def evaluate(
                     assert n_samples == len(remainings), "Missing problems in unfinished"
                     assert len(completion_id) == len(problems), "Missing problems in samples"
 
-                def stucking_checker():
-                    while remainings:
-                        last_size = len(remainings)
-                        time.sleep(240)
-                        if last_size != len(remainings) or len(remainings) == 0:
-                            continue
-                        # Potential stucking
-                        warn("No samples had finished testing in the last 240s")
-                        warn(f"{len(remainings)} samples to be tested: {remainings}")
+                    def stucking_checker():
+                        while remainings:
+                            last_size = len(remainings)
+                            time.sleep(240)
+                            if last_size != len(remainings) or len(remainings) == 0:
+                                continue
+                            # Potential stucking
+                            warn("No samples had finished testing in the last 240s")
+                            warn(f"{len(remainings)} samples to be tested: {remainings}")
 
-                threading.Thread(target=stucking_checker).start()
+                    threading.Thread(target=stucking_checker).start()
 
-                for future in tqdm(as_completed(futures), total=n_samples):
-                    result = future.result()
-                    remainings.remove(result["_identifier"])
-                    eval_results[result["task_id"]].append(result)
+                    for future in tqdm(as_completed(futures), total=n_samples):
+                        result = future.result()
+                        remainings.remove(result["_identifier"])
+                        eval_results[result["task_id"]].append(result)
 
-                # sort the results for each problem by completion_id
-                for task_id, task_results in eval_results.items():
-                    task_results.sort(key=lambda x: x["completion_id"])
-                    results["eval"][task_id] = []
-                    for res in task_results:
-                        stat, details = res["base"]
-                        results["eval"][task_id].append(
-                            {
-                                "task_id": task_id,
-                                "solution": res["solution"],
-                                "status": stat,
-                                "details": details,
-                            }
-                        )
+                        # sort the results for each problem by completion_id
+                        for task_id, task_results in eval_results.items():
+                            task_results.sort(key=lambda x: x["completion_id"])
+                            results["eval"][task_id] = []
+                            for res in task_results:
+                                stat, details = res["base"]
+                                results["eval"][task_id].append(
+                                    {
+                                        "task_id": task_id,
+                                        "solution": res["solution"],
+                                        "status": stat,
+                                        "details": details,
+                                    }
+                                )
 
-                # Calculate pass@k.
-                total = np.array([len(r) for k, r in results["eval"].items() if k in problems])
-                base_correct = []
+        # Calculate pass@k.
+        total = np.array([len(r) for k, r in results["eval"].items() if k in problems])
+        base_correct = []
 
-                for key, res in results["eval"].items():
-                    if key not in problems:
-                        continue
-                    bc = sum([r["status"] == PASS for r in res])
-                    base_correct.append(bc)
+        for key, res in results["eval"].items():
+            if key not in problems:
+                continue
+            bc = sum([r["status"] == PASS for r in res])
+            base_correct.append(bc)
 
-                base_correct = np.array(base_correct)
+        base_correct = np.array(base_correct)
 
-                pass_at_k.update({
-                    f"pass@{k}": estimate_pass_at_k(total, base_correct, k).mean()
-                    for k in pass_k
-                    if total.min() >= k
-                })
+        pass_at_k.update({
+            f"pass@{k}": estimate_pass_at_k(total, base_correct, k).mean()
+            for k in pass_k
+            if total.min() >= k
+        })
 
-            pass_at_k["model"] = os.path.basename(samples).split("--bigcodebench-")[0]
-            pass_at_k["split"] = split
-            pass_at_k["subset"] = subset
-            pass_at_k["calibrated"] = "sanitized_calibrated" in samples
-            pass_at_k["gt_pass_rate"] = gt_pass_rate
-            pass_at_k["failed_tasks"] = failed_tasks
+        pass_at_k["model"] = os.path.basename(samples).split("--bigcodebench-")[0]
+        pass_at_k["split"] = split
+        pass_at_k["subset"] = subset
+        pass_at_k["calibrated"] = calibrated
+        pass_at_k["gt_pass_rate"] = gt_pass_rate
+        pass_at_k["failed_tasks"] = failed_tasks
             
     extra = subset.capitalize()
     split = split.capitalize()
