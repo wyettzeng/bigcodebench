@@ -28,20 +28,20 @@ do
     for subset in ${subsets[@]}
     do
         # greedy
-        python myEvaluate/myEvaluate.py \
-          --model ${model} \
-          --split $split \
-          --subset $subset \
-          --n_samples 1 \
-          --do_eval False 
+        # python myEvaluate/myEvaluate.py \
+        #   --model ${model} \
+        #   --split $split \
+        #   --subset $subset \
+        #   --n_samples 1 \
+        #   --do_eval False 
 
-        # # generate
-        python myEvaluate/myEvaluate.py \
-          --model ${model} \
-          --split $split \
-          --subset $subset \
-          --n_samples 16 \
-          --do_eval False 
+        # # # generate
+        # python myEvaluate/myEvaluate.py \
+        #   --model ${model} \
+        #   --split $split \
+        #   --subset $subset \
+        #   --n_samples 16 \
+        #   --do_eval False 
 
         #eval
         python myEvaluate/myEvaluate.py \
