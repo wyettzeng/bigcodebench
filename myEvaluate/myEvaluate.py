@@ -48,8 +48,8 @@ def main(
         identifier = model.split("/")[-1].replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
         inf_path = base_out + identifier
         out_file_path = inf_path.replace("calibrated.jsonl", "calibrated_eval_results.jsonl")
-        if os.path.exists(out_file_path):
-            return # already done
+        # if os.path.exists(out_file_path):
+        #     return # already done
         
         evaluate(
             split=split,
