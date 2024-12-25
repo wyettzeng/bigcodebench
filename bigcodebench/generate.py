@@ -27,6 +27,7 @@ def codegen(
     resume: bool = True,
     batch_size: int = -1,
 ):
+    flag = False 
     with Progress(
         TextColumn(f"BigCodeBench--{split.capitalize()} ({subset.capitalize()}) •" + "[progress.percentage]{task.percentage:>3.0f}%"),
         BarColumn(),
@@ -78,7 +79,10 @@ def codegen(
                 raise Exception(f"Invalid split {split} for bigcodebench-{subset}")
             if strip_newlines:
                 prompt = prompt.strip("\n")
-            
+            if not flag:
+                print(f'======= peek {split}_prompt')
+                print(prompt)
+                flag = True 
             if nsamples > 0:
                 batch_prompts.append(prompt)
                 batch_task_ids.append(task_id)
@@ -187,9 +191,11 @@ def run_codegen(
     )
     
     extra = "-" + subset if subset != "full" else ""
-    identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
+    identifier = model.split("/")[-1].replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
     
     target_path = os.path.join(root, identifier)
+    print('========== run code gen and save')
+    print(target_path)
     
     if not resume:
         os.remove(target_path)

@@ -143,6 +143,9 @@ def unsafe_execute(
 
         try:
             full_code = code + "\n" + test_code
+            print('========')
+            print(full_code)
+            print('=========')
 
             with swallow_io():
                 exec(compile(full_code, f"{module_name}.py", 'exec'), new_module.__dict__)

@@ -151,6 +151,8 @@ def evaluate(
     if not local_execute:
         
         client = Client(remote_execute_api)
+        print('==============')
+        print('the api wants to handle the file path', samples)
         results, pass_at_k = client.predict(
             split=split,
             subset=subset,
@@ -191,8 +193,8 @@ def evaluate(
         
         gt_pass_rate = np.mean([1 if v is not None else 0 for k, v in expected_time.items() if k in problems])
         failed_tasks = [k for k, v in expected_time.items() if v is None and k in problems]
-        
-        if os.path.isfile(result_path):
+        pass_at_k = dict()
+        if False:
             print(f"Load from previous results from {result_path}")
             with open(result_path, "r") as f:
                 results = json.load(f)
@@ -216,7 +218,8 @@ def evaluate(
                     "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "eval": {},
                 }
-
+                
+                print('total samples', len(samples))
                 with ProcessPoolExecutor(max_workers=n_workers) as executor:
                     futures = []
                     completion_id = Counter()
@@ -227,6 +230,7 @@ def evaluate(
                     print("Reading samples...")
                     for sample in tqdm(load_solutions(samples)):
                         task_id = sample["task_id"]
+                        print(task_id)
                         
                         if task_id not in problems:
                             warn(
@@ -337,11 +341,11 @@ def evaluate(
 
     # save results
     if os.path.isfile(result_path):
-        decision = ""
-        while decision.lower() not in ["y", "n"]:
-            print(f"{result_path} already exists. Press [Y/N] to overwrite or exit...")
-            decision = input()
-
+        # decision = ""
+        # while decision.lower() not in ["y", "n"]:
+        #     print(f"{result_path} already exists. Press [Y/N] to overwrite or exit...")
+        #     decision = input()
+        decision = 'y'
         if decision.lower() == "y":
             # mv the file to a backup
             new_path = result_path + ".bak"
@@ -353,7 +357,7 @@ def evaluate(
     if not os.path.isfile(result_path):
         with open(result_path, "w") as f:
             json.dump(results, f, indent=2)
-
+    if len(pass_at_k)==0: save_pass_rate = False
     if save_pass_rate:
         pass_at_k_path = result_path.replace("eval_results.json", "pass_at_k.json")
 
@@ -365,10 +369,11 @@ def evaluate(
                     cprint(f"Warning: {k} is different from the saved one", "yellow")
                     
             # ask user whether to save the pass@k
-            decision = ""
-            while decision.lower() not in ["y", "n"]:
-                print(f"Save pass@k to {pass_at_k_path}? [Y/N]")
-                decision = input()
+            # decision = ""
+            # while decision.lower() not in ["y", "n"]:
+            #     print(f"Save pass@k to {pass_at_k_path}? [Y/N]")
+            #     decision = input()
+            decision = "y"
             if decision.lower() == "y":
                 new_path = pass_at_k_path + ".bak"
                 while os.path.isfile(new_path):

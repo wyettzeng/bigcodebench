@@ -52,6 +52,8 @@ class VllmDecoder(DecoderBase):
             )
             for prompt in prompts
         ]
+        print('======== peek')
+        print(prompts[0])
         vllm_outputs = self.llm.generate(
             prompts,
             SamplingParams(
