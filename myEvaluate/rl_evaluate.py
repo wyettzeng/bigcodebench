@@ -21,7 +21,7 @@ def main(
         return # already done
 
     identifier = f"{model}--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-1-sanitized_calibrated.jsonl"
-    inf_path = "haozhe/" + identifier
+    inf_path = "haozhe/inference/" + identifier
     evaluate(samples=inf_path, split=split, subset=subset, 
                 # local_execute=True
                 )

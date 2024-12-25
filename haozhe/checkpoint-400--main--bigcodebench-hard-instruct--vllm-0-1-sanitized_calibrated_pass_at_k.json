@@ -1,0 +1,9 @@
+{
+  "pass@1": 0.12162162162162163,
+  "model": "checkpoint-400--main",
+  "split": "instruct",
+  "subset": "hard",
+  "calibrated": true,
+  "gt_pass_rate": 1.0,
+  "failed_tasks": []
+}

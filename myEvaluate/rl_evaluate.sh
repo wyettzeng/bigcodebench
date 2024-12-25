@@ -2,6 +2,10 @@
 
 models=(
   "Qwen2.5-Coder-7B-Instruct"
+  "checkpoint-200"
+  "checkpoint-400"
+  "checkpoint-600"
+  "checkpoint-800"
 )
 
 splits=(
