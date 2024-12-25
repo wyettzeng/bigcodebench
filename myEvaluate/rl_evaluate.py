@@ -14,13 +14,13 @@ def main(
     temperature = 0
 
     # we evaluate locally as it errored out with API
-    out_file_name = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-1-sanitized_calibrated_eval_results.json"
+    out_file_name = f"{model}--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-1-sanitized_calibrated_eval_results.json"
     out_file_path = "haozhe/" + out_file_name
 
     if os.path.exists(out_file_path):
         return # already done
 
-    identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-1-sanitized_calibrated.jsonl"
+    identifier = f"{model}--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-1-sanitized_calibrated.jsonl"
     inf_path = "haozhe/" + identifier
     evaluate(samples=inf_path, split=split, subset=subset, 
                 # local_execute=True

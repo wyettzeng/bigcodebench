@@ -1,0 +1,9 @@
+{
+  "pass@1": 0.20270270270270271,
+  "model": "Qwen2.5-Coder-7B-Instruct--main",
+  "split": "instruct",
+  "subset": "hard",
+  "calibrated": true,
+  "gt_pass_rate": 1.0,
+  "failed_tasks": []
+}

@@ -1,13 +1,7 @@
 #!/bin/bash
 
 models=(
-  # "codellama/CodeLlama-7b-Instruct-hf"
-  # "mistralai/Mistral-7B-Instruct-v0.3"
-  # "meta-llama/Llama-3.1-8B-Instruct"
-  # "Qwen/CodeQwen1.5-7B-Chat"
-  "Qwen/Qwen2.5-Coder-7B-Instruct"
-  # "NTQAI/Nxcode-CQ-7B-orpo"
-  # "meta-llama/Meta-Llama-3-8B-Instruct"
+  "Qwen2.5-Coder-7B-Instruct"
 )
 
 splits=(
@@ -30,7 +24,7 @@ do
         python myEvaluate/rl_evaluate.py \
           --model ${model} \
           --split $split \
-          --subset $subset \
+          --subset $subset
     done
   done
 done
