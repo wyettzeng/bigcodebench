@@ -7,7 +7,8 @@ def main(
         split: str ="instruct",
         subset:str = "hard",
         n_samples: int= 16,
-        do_eval: bool = False
+        do_eval: bool = False,
+        **generation_kwargs,
     ):
     print(f"Starting {model} - {split} - {subset} - {n_samples} - do eval {do_eval}")
     revision: str = "main"
@@ -27,6 +28,7 @@ def main(
             n_samples=n_samples,
             model=model,
             backend="vllm",
+            **generation_kwargs,
         )
     elif not do_eval:
         identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
@@ -40,7 +42,8 @@ def main(
             n_samples=n_samples,
             model=model,
             backend="vllm",
-            temperature=1.0
+            temperature=1.0,
+            **generation_kwargs,
         )
     else:
         # we evaluate locally as it errored out with API
