@@ -172,3 +172,9 @@ bigcodebench/_version.py
 *.jsonl
 inspect/
 *.zip
+
+
+
+
+# CodeRM
+!haozhe/*
