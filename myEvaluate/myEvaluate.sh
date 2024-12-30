@@ -49,7 +49,7 @@ do
           --subset $subset \
           --n_samples ${n} \
           --do_eval False \
-          --tp 4
+          --tp 8
 
         #eval
         # eval not working on ping
