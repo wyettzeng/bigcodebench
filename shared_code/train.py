@@ -531,7 +531,7 @@ class WeightedLossTrainer(Trainer):
         outcomes = inputs.pop("outcomes", None)
         rho_version = training_args.use_rho
         has_reflogp = True
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if model_args.do_logp==1: 
             has_reflogp = False 
         else: 

@@ -15,6 +15,7 @@ export datafilter=${6}
 export memo="${proj}_${modelname}_IPS_max${ml}_${3}_${4}_${5}_${6}"
 export numepoch=3
 export mp=${2}
+export logp=0 # not logp mode
 
 # export mp="/home/ma-user/work/haozhe/code/math_workflow/Mammoth-code/aaout/dsmath_sft"
 # base_model_path="/home/ma-user/work/share_base_models/AI-ModelScope/Mistral-7B-v0___1/"
