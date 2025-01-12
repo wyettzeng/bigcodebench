@@ -330,7 +330,7 @@ def get_code_data(data_arg, tokenizer: transformers.PreTrainedTokenizer, templat
         prefix = messages[1]
        
         source = source + prefix['content']
-        target = example['response'].strip('python').strip('```')+tokenizer.eos_token
+        target = example['response'].strip('python')+tokenizer.eos_token
         
         sources.append(source)
         targets.append(target)
