@@ -119,7 +119,6 @@ def evaluate(
     samples: Optional[str] = None,
     no_execute: bool = False,
     local_execute: bool = False,
-    selective_evaluate: str = "",
     remote_execute_api: str = "https://bigcode-bigcodebench-evaluator.hf.space/",
     pass_k: str = "1,5,10",
     save_pass_rate: bool = True,
@@ -169,7 +168,6 @@ def evaluate(
                     calibrated=calibrated,
                     check_gt_only=check_gt_only,
                     no_gt=no_gt,
-                    selective_evaluate=selective_evaluate,
                     api_name="/predict"
                 )
                 break
@@ -195,14 +193,6 @@ def evaluate(
             samples = "__dummy__.jsonl"
 
         problems = get_bigcodebench(subset=subset)
-        
-        # Add selective evaluation logic
-        if selective_evaluate:
-            selected_ids = set(selective_evaluate.split(","))
-            problems = {k: v for k, v in problems.items() if k in selected_ids}
-            if not problems:
-                raise ValueError(f"None of the provided task IDs {selected_ids} were found in the dataset")
-
         dataset_hash = get_bigcodebench_hash(subset=subset)
         
         if not no_gt:
@@ -230,8 +220,6 @@ def evaluate(
                 if len(failed_tasks) > 0:
                     cprint(f"Failed tasks: {failed_tasks}", "red")
                 
-                return
-            
             else:
                 results = {
                     "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
@@ -250,9 +238,10 @@ def evaluate(
                         task_id = sample["task_id"]
                         
                         if task_id not in problems:
-                            # Skip if task is not in problems (either not in dataset or filtered out by selective_evaluate)
+                            warn(
+                                f"Task {task_id} is found in the samples but not found in the dataset"
+                            )
                             continue
-                            
                         solution = (
                             sample["solution"]
                             if "solution" in sample
@@ -276,10 +265,8 @@ def evaluate(
                         completion_id[task_id] += 1
                         n_samples += 1
 
-                    # Modify the assertion to account for selective evaluation
                     assert n_samples == len(remainings), "Missing problems in unfinished"
-                    # Only check against problems that weren't filtered out
-                    assert len(completion_id) == len(problems), f"Missing problems in samples. Expected {len(problems)} problems, got {len(completion_id)}"
+                    assert len(completion_id) == len(problems), "Missing problems in samples"
 
                     def stucking_checker():
                         while remainings:
