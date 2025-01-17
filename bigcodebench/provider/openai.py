@@ -9,10 +9,9 @@ from bigcodebench.provider.base import DecoderBase
 from bigcodebench.provider.utility import concurrent_call
 
 class OpenAIChatDecoder(DecoderBase):
-    def __init__(self, name: str, base_url=None, reasoning_effort="medium", **kwargs) -> None:
+    def __init__(self, name: str, base_url=None, **kwargs) -> None:
         super().__init__(name, **kwargs)
         self.base_url = base_url
-        self.reasoning_effort = reasoning_effort
     
     def codegen(
         self, prompts: List[str], do_sample: bool = True, num_samples: int = 200
@@ -46,7 +45,6 @@ class OpenAIChatDecoder(DecoderBase):
                 model=self.name,
                 max_tokens=self.max_new_tokens,
                 temperature=self.temperature,
-                reasoning_effort=self.reasoning_effort,
                 n=num_samples,
             )
             outputs = []
@@ -59,7 +57,7 @@ class OpenAIChatDecoder(DecoderBase):
         batches = concurrent_call(
             num_samples, self._codegen_api_batch, messages, num_samples=1
         )
-        return [[element for sublist in item for element in sublist] for item in zip(*batches)]
+        return [b[0] for b in batches]
 
     def is_direct_completion(self) -> bool:
         return False

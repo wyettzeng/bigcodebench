@@ -14,7 +14,6 @@ from transformers import AutoTokenizer
 from cuml.linear_model import LogisticRegression
 import cupy as cp
 
-
 def update_model_info(model_info):
     for model, info in model_info.items():
         if "https://huggingface.co/" in info["link"]:
@@ -57,8 +56,8 @@ def get_results(tids):
     for model, info in model_info.items():
         model = model.replace("/", "--")
         hf_model = ""
-        files = glob(f"results/{model}--bigcodebench-*_eval_results.json")
-        assert files, f"No files found for results/{model}--bigcodebench-*_eval_results.json"
+        files = glob(f"results/{model}--bigcodebench-*.json")
+        assert files, f"No files found for results/{model}--bigcodebench-*.json"
         for file in files:
             try:
                 _, suffix = os.path.basename(file).split("--bigcodebench-hard-")
@@ -87,7 +86,7 @@ def get_results(tids):
                 raise ValueError("Unknown task")
 
             mode = ""
-            if "calibrated" in file:
+            if "-sanitized-calibrate" in file:
                 mode = "-cal"
             
             results[info["name"]][f"pass@1"][f"{task}{mode}"] = round(mean(status)*100,1)
@@ -142,17 +141,17 @@ def split_gen():
                 if "calibrated" in file:
                     if info["prompted"]:
                         if suffix.startswith("complete"):
-                            with open(f"sanitized_calibrated_samples/complete/{model}--bigcodebench*-{suffix}", "w") as f:
+                            with open(f"sanitized_calibrated_samples/complete/{model}--bigcodebench-{suffix}", "w") as f:
                                 f.writelines(data)
                         else:
-                            with open(f"sanitized_calibrated_samples/instruct/{model}--bigcodebench*-{suffix}", "w") as f:
+                            with open(f"sanitized_calibrated_samples/instruct/{model}--bigcodebench-{suffix}", "w") as f:
                                 f.writelines(data)
                 else:
                     if suffix.startswith("complete"):
-                        with open(f"sanitized_samples/complete/{model}--bigcodebench*-{suffix}", "w") as f:
+                        with open(f"sanitized_samples/complete/{model}--bigcodebench-{suffix}", "w") as f:
                             f.writelines(data)
                     else:
-                        with open(f"sanitized_samples/instruct/{model}--bigcodebench*-{suffix}", "w") as f:
+                        with open(f"sanitized_samples/instruct/{model}--bigcodebench-{suffix}", "w") as f:
                             f.writelines(data)
 
 
@@ -169,7 +168,7 @@ def read_task_perf(tids, task="complete"):
             try:
                 try:
                     if info["prompted"]:
-                        files = glob(f"results/{model}--bigcodebench-{task}*-0-1-sanitized*calibrated_eval_results.json")
+                        files = glob(f"results/{model}--bigcodebench-{task}*-0-1-sanitized-calibrated_eval_results.json")
                         if files:
                             file = files[0]
                         else:
@@ -178,7 +177,7 @@ def read_task_perf(tids, task="complete"):
                         file = glob(f"results/{model}--bigcodebench-{task}*-0-1-sanitized_eval_results.json")[0]
                 except:
                     if info["prompted"]:# and not info["direct_complete"]:
-                        files = glob(f"results/{model}--bigcodebench-{task}*-0-1-sanitized*calibrated_hard_eval_results.json")
+                        files = glob(f"results/{model}--bigcodebench-{task}*-0-1-sanitized-calibrated_hard_eval_results.json")
                         if files:
                             file = files[0]
                         else:
@@ -188,7 +187,7 @@ def read_task_perf(tids, task="complete"):
             except:
                 try:
                     if info["prompted"]:# and not info["direct_complete"]:
-                        files = glob(f"results/{model}--bigcodebench-hard-{task}*-0-1-sanitized*calibrated_hard_eval_results.json")
+                        files = glob(f"results/{model}--bigcodebench-hard-{task}*-0-1-sanitized-calibrated_hard_eval_results.json")
                         if files:
                             file = files[0]
                         else:
@@ -197,7 +196,7 @@ def read_task_perf(tids, task="complete"):
                         file = glob(f"results/{model}--bigcodebench-hard-{task}*-0-1-sanitized_hard_eval_results.json")[0]
                 except:
                     if info["prompted"]:
-                        files = glob(f"results/{model}--bigcodebench-hard-{task}*-0-1-sanitized*calibrated_eval_results.json")
+                        files = glob(f"results/{model}--bigcodebench-hard-{task}*-0-1-sanitized-calibrated_eval_results.json")
                         if files:
                             file = files[0]
                         else:
@@ -395,7 +394,7 @@ def get_perf_df(data_dict):
 
     
 if __name__ == "__main__":
-    split_gen()
+    
     bcb_orig = load_dataset("bigcode/bigcodebench", split="v0.1.1")
     bcb_hard = load_dataset("bigcode/bigcodebench-hard", split="v0.1.1")
     bcb_config = {
@@ -409,7 +408,7 @@ if __name__ == "__main__":
         instruct_data, instruct_files = read_task_perf(bcb["task_id"], "instruct")
         complete_df = get_perf_df(complete_data)
         instruct_df = get_perf_df(instruct_data)
-
+        
         push_ds(DatasetDict({"complete": Dataset.from_pandas(complete_df), "instruct": Dataset.from_pandas(instruct_df)}), f"bigcode/bigcodebench{suffix}-perf")
 
         with open("task2domain.json", "r") as f:
