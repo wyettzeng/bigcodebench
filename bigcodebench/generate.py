@@ -132,6 +132,7 @@ def run_codegen(
     temperature: float = 0.0,
     max_new_tokens: int = 1280,
     greedy: bool = False,
+    reasoning_effort: str = "medium", # o1 and o3 only
     strip_newlines: bool = False,
     direct_completion: bool = False,
     resume: bool = True,
@@ -175,6 +176,7 @@ def run_codegen(
         split=split,
         temperature=temperature,
         max_new_tokens=max_new_tokens,
+        reasoning_effort=reasoning_effort,
         instruction_prefix=instruction_prefix,
         response_prefix=response_prefix,
         base_url=base_url,
@@ -187,6 +189,8 @@ def run_codegen(
     )
     
     extra = "-" + subset if subset != "full" else ""
+    if reasoning_effort and model.startswith("o1-") or model.startswith("o3-"):
+        model = model + f"--{reasoning_effort}"
     identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
     
     target_path = os.path.join(root, identifier)

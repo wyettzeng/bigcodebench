@@ -27,7 +27,7 @@
 </p>
 
 ## 💥 Impact
-BigCodeBench has been used by many LLM teams including:
+BigCodeBench has been trusted by many LLM teams including:
 - Zhipu AI
 - Alibaba Qwen
 - DeepSeek
@@ -37,6 +37,7 @@ BigCodeBench has been used by many LLM teams including:
 - Meta AI
 - Cohere AI
 - Sakana AI
+- Allen Institute for Artificial Intelligence (AI2)
 
 ## 📰 News
 - **[2024-10-06]** We are releasing `bigcodebench==v0.2.0`!
@@ -157,8 +158,8 @@ export GOOGLE_API_KEY=<your_google_api_key>
 
 ## 💻 LLM-generated Code
 
-We share pre-generated code samples from LLMs we have [evaluated](https://huggingface.co/spaces/bigcode/bigcodebench-leaderboard):
-*  See the attachment of our [v0.2.0.post3](https://github.com/bigcode-project/bigcodebench/releases/tag/v0.2.0.post3). We include `sanitized_samples_calibrated.zip` for your convenience.
+We share pre-generated code samples from LLMs we have [evaluated](https://huggingface.co/spaces/bigcode/bigcodebench-leaderboard) on the full set:
+*  See the attachment of our [v0.2.1.post7](https://github.com/bigcode-project/bigcodebench/releases/tag/v0.2.1.post7). We include `sanitized_samples_calibrated.zip` for your convenience.
 
 ## 🧑 Advanced Usage
 
