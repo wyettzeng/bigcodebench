@@ -1,28 +1,28 @@
 #!/bin/bash
-
+export BIGCODEBENCH_TIMEOUT_PER_TASK=10
 models=(
-  "codellama/CodeLlama-7b-Instruct-hf"
-  "mistralai/Mistral-7B-Instruct-v0.3"
-  "meta-llama/Llama-3.1-8B-Instruct"
-  "Qwen/CodeQwen1.5-7B-Chat"
+  # "codellama/CodeLlama-7b-Instruct-hf"
+  # "mistralai/Mistral-7B-Instruct-v0.3"
+  # "meta-llama/Llama-3.1-8B-Instruct"
+  # "Qwen/CodeQwen1.5-7B-Chat"
   "Qwen/Qwen2.5-Coder-7B-Instruct"
-  "NTQAI/Nxcode-CQ-7B-orpo"
-  "meta-llama/Meta-Llama-3-8B-Instruct"
+  # "NTQAI/Nxcode-CQ-7B-orpo"
+  # "meta-llama/Meta-Llama-3-8B-Instruct"
 )
 
 splits=(
-  "complete"
+  # "complete"
   "instruct"
 )
 
 subsets=(
-  "hard"
+  # "hard"
   "full"
 )
 
 n_lst=(
-  16
-  32
+  # 16
+  # 32
   64
 )
 
@@ -49,7 +49,7 @@ do
           --subset $subset \
           --n_samples ${n} \
           --do_eval False \
-          --tp 8
+          --tp 4
 
         #eval
         # eval not working on ping
