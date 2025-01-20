@@ -265,6 +265,10 @@ def evaluate(
                         completion_id[task_id] += 1
                         n_samples += 1
 
+                    print("n_samples:", n_samples)
+                    print("len(remainings):", len(remainings))
+                    print("len(completion_id):", len(completion_id))
+                    print("len(problems):", len(problems))
                     assert n_samples == len(remainings), "Missing problems in unfinished"
                     assert len(completion_id) == len(problems), "Missing problems in samples"
 
