@@ -1,9 +1,12 @@
 #!/bin/bash
 
+# Available GPUs
+cuda_devices=(1 2)
+
 models=(
-  "trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
-  "trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-1000"
-  "trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-1600"
+  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1"
+  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-2400"
+  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-3000"
 )
 
 # model="trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
@@ -17,9 +20,6 @@ subsets=(
   "hard"
   "full"
 )
-
-# Available GPUs
-cuda_devices=(4 5 6 7)
 
 # We’ll store all commands in an array
 declare -a commands=()
