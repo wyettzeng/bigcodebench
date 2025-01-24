@@ -1,9 +1,9 @@
 #!/bin/bash
 export BIGCODEBENCH_TIMEOUT_PER_TASK=10
 models=(
-  # "codellama/CodeLlama-7b-Instruct-hf"
+  "codellama/CodeLlama-7b-Instruct-hf"
   # "mistralai/Mistral-7B-Instruct-v0.3"
-  "meta-llama/Llama-3.1-8B-Instruct"
+  # "meta-llama/Llama-3.1-8B-Instruct"
   # "Qwen/CodeQwen1.5-7B-Chat"
   # "Qwen/Qwen2.5-Coder-7B-Instruct"
   # "NTQAI/Nxcode-CQ-7B-orpo"
@@ -43,23 +43,23 @@ do
       for n in ${n_lst[@]}
       do
         # # generate
-        python myEvaluate/myEvaluate.py \
-          --model ${model} \
-          --split $split \
-          --subset $subset \
-          --n_samples ${n} \
-          --do_eval True \
-          --tp 2 \
-          --bs 4 \
-
-        #eval
-        # eval not working on ping
         # python myEvaluate/myEvaluate.py \
         #   --model ${model} \
         #   --split $split \
         #   --subset $subset \
         #   --n_samples ${n} \
-        #   --do_eval True 
+        #   --do_eval True \
+        #   --tp 2 \
+        #   --bs 4 \
+
+        #eval
+        # eval not working on ping
+        python myEvaluate/myEvaluate.py \
+          --model ${model} \
+          --split $split \
+          --subset $subset \
+          --n_samples ${n} \
+          --do_eval True 
       done
     done
   done

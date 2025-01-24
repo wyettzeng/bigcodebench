@@ -234,7 +234,7 @@ def evaluate(
                     remainings = set()
 
                     print("Reading samples...")
-                    for sample in tqdm(load_solutions(samples)):
+                    for idx, sample in tqdm(enumerate(load_solutions(samples))):
                         task_id = sample["task_id"]
                         
                         if task_id not in problems:
