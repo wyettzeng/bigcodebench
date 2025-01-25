@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(3 4 5 6 7)
+cuda_devices=(3 1)
 
 models=(
   "CodeDPO/qwen25-ins-7b-coderm-reinforce-plus"

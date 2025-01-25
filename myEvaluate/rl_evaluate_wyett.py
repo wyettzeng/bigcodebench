@@ -26,6 +26,7 @@ def main(
         n_samples=1,
         model=model,
         backend="vllm",
+        # local_execute=True,
         **generation_kwargs,
     )
 
