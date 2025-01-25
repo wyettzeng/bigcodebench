@@ -6,7 +6,7 @@ model="meta-llama/Llama-3.1-8B-Instruct"
 
 python myEvaluate/myEvaluate.py \
   --model ${model} \
-  --split "instruct" \
-  --subset "hard" \
+  --split "complete" \
+  --subset "full" \
   --n_samples 64 \
-  --do_eval True > llama3.1_ih_64.log
+  --do_eval True

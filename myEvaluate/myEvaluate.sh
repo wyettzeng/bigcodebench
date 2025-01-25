@@ -10,22 +10,22 @@ models=(
   # "NTQAI/Nxcode-CQ-7B-orpo"
   # "meta-llama/Meta-Llama-3-8B-Instruct"
   # CodeDPO/llama3-RL-both-E2-0117-ckpt1624
-  /home/dongfu/.cache/modelscope/hub/jasperhaozhe/coder-RL-both-E2-0117-ckpt1719
+  # /home/dongfu/.cache/modelscope/hub/jasperhaozhe/coder-RL-both-E2-0117-ckpt1719
 )
 
 splits=(
-  "complete"
+  # "complete"
   "instruct"
 )
 
 subsets=(
-  "hard"
+  # "hard"
   "full"
 )
 
 n_lst=(
-  16
-  32
+  # 16
+  # 32
   64
 )
 
@@ -36,12 +36,12 @@ do
     for subset in ${subsets[@]}
     do
       # greedy
-      python myEvaluate/myEvaluate.py \
-        --model ${model} \
-        --split $split \
-        --subset $subset \
-        --n_samples 1 \
-        --do_eval False 
+      # python myEvaluate/myEvaluate.py \
+      #   --model ${model} \
+      #   --split $split \
+      #   --subset $subset \
+      #   --n_samples 1 \
+      #   --do_eval False 
 
       for n in ${n_lst[@]}
       do

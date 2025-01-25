@@ -58,7 +58,7 @@ def main(
         identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
         inf_path = "bcb_results/" + identifier
         evaluate(samples=inf_path, split=split, subset=subset, 
-                 local_execute=True
+                 local_execute=True,
                  )
 
 if __name__ == "__main__":
