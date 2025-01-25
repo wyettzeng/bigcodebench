@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(1 2)
+cuda_devices=(3 4 5 6 7)
 
 models=(
-  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1"
-  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-2400"
-  "trained_models/lr10_w_E1_kl2.0_CodeRLTrain_llama3_IPS_max2048_____E1/checkpoint-3000"
+  "CodeDPO/qwen25-ins-7b-coderm-reinforce-plus"
+  "CodeDPO/qwen25-ins-7b-testcaserm-7b-reinforce-plus"
+  "Qwen/Qwen2.5-7B-Instruct"
 )
 
 # model="trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
