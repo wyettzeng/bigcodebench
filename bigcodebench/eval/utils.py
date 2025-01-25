@@ -298,8 +298,10 @@ def reliability_guard(max_as_limit, max_data_limit, max_stack_limit):
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = "3" 
     os.environ['TF_ENABLE_ONEDNN_OPTS'] = "0"
     
-    os.killpg = None # Definitely do not want these to be executed
-    os.getpgid = None # Definitely do not want these to be executed
+    # os.killpg = None # Definitely do not want these to be executed
+    # os.getpgid = None # Definitely do not want these to be executed
+    # os.kill = None
+    # subprocess.call = None
     
     if max_as_limit and max_data_limit and max_stack_limit:
         import resource

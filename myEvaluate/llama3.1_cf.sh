@@ -9,4 +9,4 @@ python myEvaluate/myEvaluate.py \
   --split "complete" \
   --subset "full" \
   --n_samples 64 \
-  --do_eval True
+  --do_eval True > llama3.1_cf_64.log
