@@ -8,11 +8,12 @@ python myEvaluate/myEvaluate.py \
   --subset "full" \
   --n_samples 64 \
   --do_eval False \
-  --tp 4
+  --tp 4 \
+  --bs 8
 
-python myEvaluate/myEvaluate.py \
-  --model ${model} \
-  --split "instruct" \
-  --subset "full" \
-  --n_samples 64 \
-  --do_eval True > codellama_if_64.log 2>&1
+# python myEvaluate/myEvaluate.py \
+#   --model ${model} \
+#   --split "instruct" \
+#   --subset "full" \
+#   --n_samples 64 \
+#   --do_eval True > codellama_if_64.log 2>&1
