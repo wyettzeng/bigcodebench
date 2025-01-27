@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(4 5 6 7)
+cuda_devices=(4 3)
 
 models=(
   "CodeDPO/qwen25-coder-base-7b-testcaserm-7b-ppo-binary"
   "CodeDPO/qwen25-ins-7b-testcaserm-7b-reinforce-plus_new_dataset"
   "CodeDPO/qwen25-ins-7b-coderm-7b-ppo"
+  "CodeDPO/qwen25-ins-7b-testcaserm-7b-reinforce-plus-binary"
 )
 
 # model="trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
