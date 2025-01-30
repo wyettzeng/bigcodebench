@@ -17,5 +17,5 @@ python myEvaluate/myEvaluate.py \
   --model ${model} \
   --split "complete" \
   --subset "full" \
-  --n_samples 64 \
+  --n_samples 32 \
   --do_eval True

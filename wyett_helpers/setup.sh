@@ -12,3 +12,5 @@ pip install packaging ninja
 pip install flash-attn --no-build-isolation
 # Note: if you have installation problem, consider using pre-built
 # wheels from https://github.com/Dao-AILab/flash-attention/releases
+
+pip install -r https://raw.githubusercontent.com/bigcode-project/bigcodebench/main/Requirements/requirements-eval.txt

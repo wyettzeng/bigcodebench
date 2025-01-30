@@ -1,5 +1,7 @@
 bcb_results/*
 trained_models/*
+bcb_results_old
+inf_results_cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
