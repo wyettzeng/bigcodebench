@@ -1,15 +1,11 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(1 4)
+cuda_devices=(0 1 2 3)
 
 models=(
-  # "/data/code_llm/trained/qwen25-coder-7b-testcasermbinaryFalse-7b-reinforcepp_new_dataset_hard"
-  # "/data/code_llm/trained/qwen25-coder-7b-testcasermbinaryTrue-7b-reinforcepp_new_dataset_hard-binary"
-  # "CodeDPO/qwen25-coder-base-7b-testcaserm-7b-new-dataset-hard"
-  "/data/code_llm/trained/qwen25-coder-7b-rm-7b-reinforcepp_new_dataset_hard"
-  "/data/code_llm/trained/qwen25-base-7b-rm-7b-reinforcepp_new_dataset_hard"
-  "CodeDPO/qwen25-ins-7b-coderm_new_margin_scalebt-7b-reinforce-plus-episode_1"
+    "CodeDPO/qwen25-coder-inst-7b-testcaserm2-7b-reinforce_plus_new_dataset_hard"
+    "CodeDPO/qwen25-ins-7b-coderm_new_margin_scalebt-7b-reinforce_plus_new_dataset"
 )
 
 # model="trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
