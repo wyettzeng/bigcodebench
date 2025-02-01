@@ -8,7 +8,6 @@ models=(
     "CodeDPO/qwen25-ins-7b-coderm_new_margin_scalebt-7b-reinforce_plus_new_dataset"
 )
 
-# model="trained_models/lr10_w_E1_kl0.5_CodeRLTrain_llama3_IPS_max2048_____E1"
 
 splits=(
   "complete"
