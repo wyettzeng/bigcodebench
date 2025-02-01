@@ -4,14 +4,14 @@
 models=(
   # "codellama/CodeLlama-7b-Instruct-hf"
   # "mistralai/Mistral-7B-Instruct-v0.3"
-  # "meta-llama/Llama-3.1-8B-Instruct"
+  "meta-llama/Llama-3.1-8B-Instruct"
   # "Qwen/CodeQwen1.5-7B-Chat"
-  "Qwen/Qwen2.5-Coder-7B-Instruct"
+  # "Qwen/Qwen2.5-Coder-7B-Instruct"
   # "NTQAI/Nxcode-CQ-7B-orpo"
 )
 
 splits=(
-  # "complete"
+  "complete"
   "instruct"
 )
 
@@ -21,8 +21,8 @@ subsets=(
 )
 
 n_lst=(
-  16
-  32
+  # 16
+  # 32
   64
 )
 
