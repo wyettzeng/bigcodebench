@@ -11,12 +11,12 @@ models=(
 )
 
 splits=(
-  "complete"
+  # "complete"
   "instruct"
 )
 
 subsets=(
-  "hard"
+  # "hard"
   "full"
 )
 
@@ -26,58 +26,14 @@ n_lst=(
   64
 )
 
-# for model in ${models[@]}
-# do
-#   for split in ${splits[@]}
-#   do
-#     for subset in ${subsets[@]}
-#     do
-#       # greedy
-#       # python myEvaluate/myEvaluate.py \
-#       #   --model ${model} \
-#       #   --split $split \
-#       #   --subset $subset \
-#       #   --n_samples 1 \
-#       #   --do_eval False 
-
-#       for n in ${n_lst[@]}
-#       do
-#         # # generate
-#         # python myEvaluate/myEvaluate.py \
-#         #   --model ${model} \
-#         #   --split $split \
-#         #   --subset $subset \
-#         #   --n_samples ${n} \
-#         #   --do_eval True \
-#         #   --tp 2 \
-#         #   --bs 4 \
-
-#         #eval
-#         # eval not working on ping
-#         python myEvaluate/myEvaluate.py \
-#           --model ${model} \
-#           --split $split \
-#           --subset $subset \
-#           --n_samples ${n} \
-#           --do_eval True &
-#       done
-#     done
-#   done
-# done
-# wait
-
-
 for model in "${models[@]}"
 do
   for n in "${n_lst[@]}"
   do
-      # Inside this process, loop over splits and subsets
       for split in "${splits[@]}"
       do
         for subset in "${subsets[@]}"
         do
-          # You can adjust or uncomment your commands here as needed.
-          # For example, if you only want to do eval, do:
           python myEvaluate/myEvaluate.py \
             --model "${model}" \
             --split "${split}" \
