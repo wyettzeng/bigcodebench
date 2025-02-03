@@ -33,9 +33,9 @@ def main(
     elif not do_eval:
         identifier = model.replace("/", "--") + f"--{revision}--bigcodebench{extra}-{split}--{backend}-{temperature}-{n_samples}-sanitized_calibrated.jsonl"
         inf_path = "bcb_results/" + identifier
-        if os.path.exists(inf_path):
-            print(f"Skipping {model} - {split} - {subset} - {n_samples} - do eval {do_eval} as file {inf_path} exists")
-            return
+        # if os.path.exists(inf_path):
+        #     print(f"Skipping {model} - {split} - {subset} - {n_samples} - do eval {do_eval} as file {inf_path} exists")
+        #     return
 
         run_codegen(
             split=split,
@@ -43,7 +43,7 @@ def main(
             n_samples=n_samples,
             model=model,
             backend="vllm",
-            temperature=1.0,
+            temperature=0.85,
             **generation_kwargs,
         )
     else:

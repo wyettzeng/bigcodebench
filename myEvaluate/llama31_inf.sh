@@ -4,8 +4,8 @@ model="meta-llama/Llama-3.1-8B-Instruct"
 python myEvaluate/myEvaluate.py \
   --model ${model} \
   --split "instruct" \
-  --subset "hard" \
+  --subset "full" \
   --n_samples 64 \
   --do_eval False \
-  --tp 4 \
+  --tp 2 \
   --bs 8
