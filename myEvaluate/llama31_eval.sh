@@ -1,5 +1,5 @@
 #!/bin/bash
-# export BIGCODEBENCH_TIMEOUT_PER_TASK=10
+export BIGCODEBENCH_TIMEOUT_PER_TASK=10
 
 model="meta-llama/Llama-3.1-8B-Instruct"
 

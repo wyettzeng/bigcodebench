@@ -59,6 +59,7 @@ def main(
         inf_path = "bcb_results/" + identifier
         evaluate(samples=inf_path, split=split, subset=subset, 
                  local_execute=True,
+                 parallel=16,
                  )
 
 if __name__ == "__main__":
