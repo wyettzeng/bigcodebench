@@ -24,7 +24,10 @@ def make_model(
     # tokenizer
     tokenizer_name: str = None,
     tokenizer_legacy: bool = True,
+    r1_style_prompt: bool = False,
 ) -> DecoderBase:
+    if r1_style_prompt:
+        assert backend == "vllm" # only support vllm
     if backend == "vllm":
         from bigcodebench.provider.vllm import VllmDecoder
 
@@ -43,6 +46,7 @@ def make_model(
             trust_remote_code=trust_remote_code,
             tokenizer_name=tokenizer_name,
             tokenizer_legacy=tokenizer_legacy,
+            r1_style_prompt=r1_style_prompt,
         )
     elif backend == "hf":
         from bigcodebench.provider.hf import HuggingFaceDecoder

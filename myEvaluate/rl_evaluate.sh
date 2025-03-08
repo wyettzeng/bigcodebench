@@ -1,20 +1,20 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(7)
+cuda_devices=(2 3)
 
 models=(
-    "/home/wyett/trained/qwen25-base-7b-rm-7b-reinforcepp_new_dataset_hard"
+    "CodeDPO/qwen25-coder-inst-7b-reinforce-plus_v2_mini_processed_r1"
 )
 
 
 splits=(
   "complete"
-  # "instruct"
+  "instruct"
 )
 
 subsets=(
-  # "hard"
+  "hard"
   "full"
 )
 

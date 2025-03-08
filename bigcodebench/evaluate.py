@@ -130,6 +130,7 @@ def evaluate(
     max_stack_limit: int = 10,
     check_gt_only: bool = False,
     no_gt: bool = False,
+    r1_style_prompt: bool = False,
     **model_kwargs,
 ):  
     
@@ -137,6 +138,7 @@ def evaluate(
         samples = run_codegen(
             split=split,
             subset=subset,
+            r1_style_prompt=r1_style_prompt,
             **model_kwargs,
         )
     

@@ -26,6 +26,8 @@ def main(
         n_samples=1,
         model=model,
         backend="vllm",
+        r1_style_prompt=True,
+        max_new_tokens=12000,
         # local_execute=True,
         **generation_kwargs,
     )

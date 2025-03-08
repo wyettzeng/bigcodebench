@@ -22,11 +22,14 @@ class VllmDecoder(DecoderBase):
         }
         if self.tokenizer_name is None:
             self.tokenizer_name = self.name
+        self.r1_style_prompt: bool = kwargs["r1_style_prompt"],
         
         self.tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_name, **kwargs, legacy=self.tokenizer_legacy)
-        if self.is_direct_completion():
+        
+        # if we have r1 style prompt, there are going to be # <think> ... </think> ...... which we should not have these eos tokens
+        if self.is_direct_completion() and not self.r1_style_prompt:
             self.eos += extra_eos_for_direct_completion(dataset)
-        else:
+        elif not self.r1_style_prompt:
             self.eos += ["\n```\n"]
         self.llm = LLM(model=name, max_model_len=self.max_new_tokens, **kwargs)
         self.llm.set_tokenizer(tokenizer=self.tokenizer)
@@ -49,6 +52,7 @@ class VllmDecoder(DecoderBase):
                 response_prefix=self.response_prefix,
                 tokenizer=self.tokenizer,
                 direct_completion=self.direct_completion,
+                r1_style_prompt=self.r1_style_prompt,
             )
             for prompt in prompts
         ]

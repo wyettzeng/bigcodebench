@@ -26,6 +26,7 @@ def codegen(
     id_range: Tuple[int, int] = None,
     resume: bool = True,
     batch_size: int = -1,
+    r1_style_prompt: bool = False,
 ):
     with Progress(
         TextColumn(f"BigCodeBench--{split.capitalize()} ({subset.capitalize()}) •" + "[progress.percentage]{task.percentage:>3.0f}%"),
@@ -145,6 +146,7 @@ def run_codegen(
     trust_remote_code: bool = False,
     tokenizer_name: str = None,
     tokenizer_legacy: bool = False,
+    r1_style_prompt: bool = False,
 ):
 
     if greedy or (temperature == 0 and n_samples == 1):
@@ -183,7 +185,8 @@ def run_codegen(
         trust_remote_code=trust_remote_code,
         direct_completion=direct_completion,
         tokenizer_name=tokenizer_name,
-        tokenizer_legacy=tokenizer_legacy
+        tokenizer_legacy=tokenizer_legacy,
+        r1_style_prompt=r1_style_prompt,
     )
     
     extra = "-" + subset if subset != "full" else ""

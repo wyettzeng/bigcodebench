@@ -30,6 +30,7 @@ def make_raw_chat_prompt(
     response_prefix: str,
     tokenizer: AutoTokenizer,
     direct_completion: bool = False,
+    r1_style_prompt: bool = False,
 ) -> str:
     # directly return prompt if it does not have a tokenizer.chat_template
     if tokenizer:
@@ -58,13 +59,25 @@ def make_raw_chat_prompt(
 ```
 """
     if tokenizer:
-        task_prompt = tokenizer.apply_chat_template(
-            [
-                {"role": "user", "content": task_prompt},
-                {"role": "assistant", "content": response},
-            ],
-            tokenize=False,
-        ).split(_MAGIC_SPLITTER_)[0]
+        if r1_style_prompt:
+            task_prompt = tokenizer.apply_chat_template(
+                [
+                    {"role": "system", "content": """\
+A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. The reasoning process and answer are enclosed within <think> </think> and <answer> </answer> tags, respectively, i.e., <think> reasoning process here </think> <answer> answer here </answer>.
+"""},
+                    {"role": "user", "content": task_prompt},
+                    {"role": "assistant", "content": response},
+                ],
+                tokenize=False,
+            ).split(_MAGIC_SPLITTER_)[0]
+        else:
+            task_prompt = tokenizer.apply_chat_template(
+                [
+                    {"role": "user", "content": task_prompt},
+                    {"role": "assistant", "content": response},
+                ],
+                tokenize=False,
+            ).split(_MAGIC_SPLITTER_)[0]
     return task_prompt
 
 

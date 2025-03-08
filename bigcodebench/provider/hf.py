@@ -17,6 +17,7 @@ class HuggingFaceDecoder(DecoderBase):
         name: str,
         dataset: str,
         attn_implementation: str = "eager",
+        r1_style_prompt: bool = False,
         **kwargs,
     ):
         super().__init__(name=name, **kwargs)
@@ -38,9 +39,9 @@ class HuggingFaceDecoder(DecoderBase):
         # assume the model is decoder-only
         self.tokenizer.padding_side = 'left'
         
-        if self.is_direct_completion():  # no chat template
+        if self.is_direct_completion() and not r1_style_prompt:  # no chat template
             self.eos += extra_eos_for_direct_completion(dataset)
-        else:  # with chat template
+        elif not r1_style_prompt:  # with chat template
             self.eos += ["\n```\n"]
 
         print(f"{self.eos = }")
