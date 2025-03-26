@@ -11,7 +11,7 @@ from bigcodebench.provider.utility import (
 )
 
 class VllmDecoder(DecoderBase):
-    def __init__(self, name: str, dataset: str, tp: int, **kwargs) -> None:
+    def __init__(self, name: str, dataset: str, tp: int, r1_style_prompt:bool=False, **kwargs) -> None:
         super().__init__(name, **kwargs)
 
         kwargs = {
@@ -22,7 +22,7 @@ class VllmDecoder(DecoderBase):
         }
         if self.tokenizer_name is None:
             self.tokenizer_name = self.name
-        self.r1_style_prompt: bool = kwargs["r1_style_prompt"],
+        self.r1_style_prompt: bool = r1_style_prompt,
         
         self.tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_name, **kwargs, legacy=self.tokenizer_legacy)
         

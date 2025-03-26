@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # Available GPUs
-cuda_devices=(2 3)
+cuda_devices=(4 5 6 7)
 
 models=(
     "CodeDPO/qwen25-coder-inst-7b-reinforce-plus_v2_mini_processed_r1"
+    "CodeDPO/qwen25-coder-base-7b-reinforce-plus_v2_mini_processed_r1"
+    "CodeDPO/qwen25-coder-base-7b-reinforce-plus_v2_mini_processed_r1_grpo_kl"
+    "CodeDPO/qwen25-coder-inst-7b-reinforce-plus_v2_mini_processed_r1_cold_start"
 )
 
 
